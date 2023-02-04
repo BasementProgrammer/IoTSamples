@@ -12,40 +12,13 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Certificates\AmazonRootCA1.crt">
+    <ItemGroup>
+    <!-- Add the following entry for each file in the certificate directory. 
+    <None Update="Certificates\FINE_NAME">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Certificates\AmazonRootCA1.pem">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\AmazonRootCA3.pem">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\certificate.cert.pfx">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\dotnet-thing-certificate.pem.crt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\dotnet-thing-private.pem.key">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\dotnet-thing-public.pem.key">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\RaspberryPI-1-Policy">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\RaspberryPI-1.cert.pem">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\RaspberryPI-1.private.key">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Certificates\RaspberryPI-1.public.key">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    -->
+    
   </ItemGroup>
 
 </Project>

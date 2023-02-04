@@ -10,7 +10,7 @@ namespace IoTSample
     {
         // Replace this text with the IoT endpoint for your account. You can locate this bu going to 
         // your AWS account. Select IoT COre from the AWS Services menu. Scroll down to settings on the 
-        // left hand nafigation panel. You will see the enbpoint listed under "Device data endpoint."
+        // left hand navigation panel. You will see the endpoint listed under "Device data endpoint."
         private const string iotEndpoint = "_ENDPOINT_HERE_";
         private const int brokerPort = 8883;
         // Topic name that you use to publish and subscribe to messages
@@ -52,7 +52,7 @@ namespace IoTSample
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Error copnnecting... " + ex.ToString());
+                Console.WriteLine("Error connecting... " + ex.ToString());
                 return;
             }
 

@@ -26,7 +26,7 @@ namespace IoTSample.Sensors
 
         private void RandomStepWaterLevel ()
         {
-            // an adjustment value that is between -MaxWaterAdgustment and +MaxWaterAdgustment
+            // an adjustment value that is between -MaxWaterAdjustment and +MaxWaterAdjustment
             // 0.7 * (2 * 10) - 10 = 0.7 * 20 - 10 = 14 - 10 = 4
             var waterAdjustment = (_random.NextDouble() * (2 * MaxWaterAdgustment)) - MaxWaterAdgustment;
             _waterLevel += waterAdjustment;
