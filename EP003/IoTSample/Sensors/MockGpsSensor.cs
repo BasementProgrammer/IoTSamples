@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using IoTSample.Models;
 
 namespace IoTSample.Sensors
 {
@@ -10,18 +11,18 @@ namespace IoTSample.Sensors
     {
         private Random _random = new Random();
 
-        private GpsData _location;
+        private GpsDataMessage _location;
 
         public MockGpsSensor ()
         {
-            _location = new GpsData
+            _location = new GpsDataMessage
             {
                 Latitude = _random.NextDouble() * 180 - 90,
                 Longitude = _random.NextDouble() * 360 - 180
             };
         }
 
-        public GpsData GpsLocation
+        public GpsDataMessage GpsLocation
         {
             get
             {

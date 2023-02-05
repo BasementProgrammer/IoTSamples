@@ -1,6 +1,6 @@
-﻿namespace IoTSample.Sensors
+﻿namespace IoTSample.Models
 {
-    public class GpsData
+    public class GpsDataMessage
     {
         public double Latitude { get; internal set; }
         public double Longitude { get; internal set; }

@@ -32,16 +32,16 @@ namespace IoTSample.Models
 
 
 
-        [JsonPropertyName("sensorId")]
-        public string SensorId { get; }
-        [JsonPropertyName("messageId")]
-        public int MessageId { get; }
-        [JsonPropertyName("readingDate")]
-        public DateTime ReadingDate { get; }
-        [JsonPropertyName("gpsLocation")]
-        public string GpsLocation { get; }
-        [JsonPropertyName("waterLevel")]
-        public double WaterLevel { get; }
+        [JsonProperty("sensorId")]
+        public string SensorId { get; set; }
+        [JsonProperty("messageId")]
+        public int MessageId { get; set;  }
+        [JsonProperty("readingDate")]
+        public DateTime ReadingDate { get; set;  }
+        [JsonProperty("gpsLocation")]
+        public string GpsLocation { get;  set; }
+        [JsonProperty("waterLevel")]
+        public double WaterLevel { get;  set; }
 
     }
 }

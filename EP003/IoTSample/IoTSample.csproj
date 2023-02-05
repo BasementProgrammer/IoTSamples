@@ -12,13 +12,15 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
-    <ItemGroup>
-    <!-- Add the following entry for each file in the certificate directory. 
+<!--
+      Add the following ItemGroup, and include an entry for each file in the certificate directory.
+      If you are using an IDE, configure each file to Always be compied to the destination.
+  <ItemGroup>
     <None Update="Certificates\FINE_NAME">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    -->
-    
+    </None>  
   </ItemGroup>
+-->
+
 
 </Project>

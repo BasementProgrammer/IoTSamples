@@ -2,6 +2,9 @@
 using System.Reflection.Metadata;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using IoTSample.Models;
+using IoTSample.Sensors;
+using Newtonsoft.Json;
 using uPLibrary.Networking.M2Mqtt;
 
 namespace IoTSample
@@ -11,44 +14,36 @@ namespace IoTSample
         // Replace this text with the IoT endpoint for your account. You can locate this bu going to 
         // your AWS account. Select IoT COre from the AWS Services menu. Scroll down to settings on the 
         // left hand navigation panel. You will see the endpoint listed under "Device data endpoint."
-        private const string iotEndpoint = "_ENDPOINT_HERE_";
-        private const int brokerPort = 8883;
-        // Topic name that you use to publish and subscribe to messages
-        private const string topic = "sdk/test/dotnet";
-        private const string message = "Ping! ";
+        private const string IotEndpoint = "_ENDPOINT_";
+        private const string ThingName = "_THING_NAME_";
+        private const string ClientId = "_CLIENT_ID_";
+        
+        private const int BrokerPort = 8883;
+        private const string Topic = "sdk/test/dotnet";
+        private static MqttClient? _client;
 
-        private const string _clientId = "DotNetTestClient";
-
-        private static MqttClient _client;
-
-        // Replace this with the prefix that is part of the generated file name for your certificates.
-        private const string thingName = "THING_NAME_HERE";
-
+        // Mock Sensors for the project
+        private static IGpsSensor _gpsSensor = new MockGpsSensor();
+        private static IWaterLevelSensor _waterLevelSensor = new MockWaterLevelSensor();
+        
         static void Main(string[] args)
         {
-            String BaseDirectory;
-            X509Certificate2 clientCert;
-
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                clientCert = new X509Certificate2(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Certificates/certificate.cert.pfx"), "Password1");
-            }
-            else
-            {
-                var certPem = File.ReadAllText(string.Format("Certificates/{0}-certificate.pem.crt", thingName));
-                var eccPem = File.ReadAllText(string.Format("Certificates/{0}-private.pem.key", thingName));
-                clientCert = X509Certificate2.CreateFromPem(certPem, eccPem);
-            }
-            var caCert = X509Certificate.CreateFromCertFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Certificates/AmazonRootCA1.pem"));
-            
-            _client = new MqttClient(iotEndpoint, brokerPort, true, caCert, clientCert, MqttSslProtocols.TLSv1_2);
+            var caCert = X509Certificate.CreateFromCertFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Certificates/root-CA.crt"));
+            var certPem = File.ReadAllText($"Certificates/{ThingName}.cert.pem");
+            var eccPem = File.ReadAllText($"Certificates/{ThingName}.private.key");
+            var clientCert = X509Certificate2.CreateFromPem(certPem, eccPem);
+            // Set up the cline to connect to AWS
+            _client = new MqttClient(IotEndpoint, BrokerPort, true, caCert, clientCert, MqttSslProtocols.TLSv1_2);
             _client.MqttMsgPublishReceived += Client_MqttMsgPublishReceived;
             _client.ConnectionClosed += Client_ConnectionClosed;
 
             try
             {
-                _client.Connect(_clientId);
-                _client.Subscribe(new string[] { topic }, new byte[] { 0 });
+                // Try connecting to AWS IoT Core
+                _client.Connect(ClientId);
+                // Subscribe to the topics to receive echo messages.
+                // You would not normally do this in a clinet, we are just doing it here for testing.
+                _client.Subscribe(new string[] { Topic }, new byte[] { 0 });
             }
             catch (Exception ex)
             {
@@ -56,15 +51,26 @@ namespace IoTSample
                 return;
             }
 
-            int i = 0;
+            var messageCount = 0;
             while (true)
             {
                 try
                 {
-                    _client.Publish(topic, Encoding.UTF8.GetBytes($"{message} {i}"));
-                    Console.WriteLine($"Published: {message} {i}");
-                    i++;
+                    // Get current values from the sensors.
+                    var waterLevel = _waterLevelSensor.WaterLevel;
+                    var gpsLocation = _gpsSensor.GpsLocation;
+                    // Format a message for the current readiongs.
+                    var waterLevelMessage =
+                        new WaterLevelMessage(ThingName, messageCount, DateTime.Now, gpsLocation.ToString(), waterLevel);
+                    
+                    // Serialize WaterLevelMessage to JSON string and publish to MQTT broker
+                    var serializedMessage = JsonConvert.SerializeObject(waterLevelMessage);
+                    _client.Publish(Topic, Encoding.UTF8.GetBytes($"{serializedMessage}"));
+                    Console.WriteLine($"Published: {serializedMessage} ");
+                    // Sleep the current thread for 5 seconds.
+                    // You would normally have a longer gap between readings, but 5 seconds is good for testing.
                     Thread.Sleep(5000);
+                    messageCount++;
                 }
                 catch (Exception ex)
                 {
@@ -78,21 +84,21 @@ namespace IoTSample
 
         private static void Client_MqttMsgPublishReceived(object sender, uPLibrary.Networking.M2Mqtt.Messages.MqttMsgPublishEventArgs e)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach ( byte b in e.Message)
-                {
+            var sb = new StringBuilder();
+            foreach ( var b in e.Message)
+            {
                 sb.Append(Convert.ToChar( b));
             }
 
-            string message = sb.ToString();
+            var message = sb.ToString();
             Console.WriteLine("Message Received: " + message);
         }
 
         private static void Client_ConnectionClosed (object sender, EventArgs e)
         {
             // Reconnect the client.
-            _client.Connect(_clientId);
-            _client.Subscribe(new string[] { topic }, new byte[] { 0 });
+            _client?.Connect(ThingName);
+            _client?.Subscribe(new string[] { Topic }, new byte[] { 0 });
         }
 
     }
