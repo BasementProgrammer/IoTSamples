@@ -11,13 +11,14 @@
     <PackageReference Include="M2MqttDotnetCore" Version="1.1.0" />
   </ItemGroup>
 
+<!--
+      Add the following ItemGroup, and include an entry for each file in the certificate directory.
+      If you are using an IDE, configure each file to Always be compied to the destination.
   <ItemGroup>
-    <!-- Add the following entry for each file in the certificate directory. -->
-    <None Update="Certificates\DotNetSampleThing.*">
+    <None Update="Certificates\FINE_NAME">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    
-    
+    </None>  
   </ItemGroup>
+-->
 
 </Project>

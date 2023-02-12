@@ -14,8 +14,8 @@ namespace IoTSample
         // Replace this text with the IoT endpoint for your account. You can locate this bu going to 
         // your AWS account. Select IoT COre from the AWS Services menu. Scroll down to settings on the 
         // left hand navigation panel. You will see the endpoint listed under "Device data endpoint."
-        private const string IotEndpoint = "a1t7e1kccwk449-ats.iot.us-east-2.amazonaws.com";
-        private const string ThingName = "DotNetTestThing";
+        private const string IotEndpoint = "_ENDPOINT_HERE_";
+        private const string ThingName = "_THING_NAME_HERE_";
         private const string ClientId = "sdk-dotnet";
         
         private const int BrokerPort = 8883;
@@ -42,7 +42,7 @@ namespace IoTSample
                 // Try connecting to AWS IoT Core
                 _client.Connect(ClientId);
                 // Subscribe to the topics to receive echo messages.
-                // You would not normally do this in a clinet, we are just doing it here for testing.
+                // You would not normally do this in a client, we are just doing it here for testing.
                 _client.Subscribe(new string[] { Topic }, new byte[] { 0 });
             }
             catch (Exception ex)
@@ -59,7 +59,7 @@ namespace IoTSample
                     // Get current values from the sensors.
                     var waterLevel = _waterLevelSensor.WaterLevel;
                     var gpsLocation = _gpsSensor.GpsLocation;
-                    // Format a message for the current readiongs.
+                    // Format a message for the current readings.
                     var waterLevelMessage =
                         new WaterLevelMessage(ThingName, messageCount, DateTime.Now, gpsLocation.ToString(), waterLevel);
                     
