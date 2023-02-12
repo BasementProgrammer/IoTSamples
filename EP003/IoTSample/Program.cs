@@ -14,9 +14,9 @@ namespace IoTSample
         // Replace this text with the IoT endpoint for your account. You can locate this bu going to 
         // your AWS account. Select IoT COre from the AWS Services menu. Scroll down to settings on the 
         // left hand navigation panel. You will see the endpoint listed under "Device data endpoint."
-        private const string IotEndpoint = "_ENDPOINT_";
-        private const string ThingName = "_THING_NAME_";
-        private const string ClientId = "_CLIENT_ID_";
+        private const string IotEndpoint = "a1t7e1kccwk449-ats.iot.us-east-2.amazonaws.com";
+        private const string ThingName = "DotNetTestThing";
+        private const string ClientId = "sdk-dotnet";
         
         private const int BrokerPort = 8883;
         private const string Topic = "sdk/test/dotnet";
@@ -29,8 +29,8 @@ namespace IoTSample
         static void Main(string[] args)
         {
             var caCert = X509Certificate.CreateFromCertFile(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Certificates/root-CA.crt"));
-            var certPem = File.ReadAllText($"Certificates/{ThingName}.cert.pem");
-            var eccPem = File.ReadAllText($"Certificates/{ThingName}.private.key");
+            var certPem = File.ReadAllText(string.Format("Certificates/{0}.cert.pem", ThingName));
+            var eccPem = File.ReadAllText(string.Format("Certificates/{0}.private.key", ThingName));
             var clientCert = X509Certificate2.CreateFromPem(certPem, eccPem);
             // Set up the cline to connect to AWS
             _client = new MqttClient(IotEndpoint, BrokerPort, true, caCert, clientCert, MqttSslProtocols.TLSv1_2);

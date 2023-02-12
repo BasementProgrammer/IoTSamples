@@ -17,8 +17,13 @@ namespace IoTSample.Sensors
         {
             _location = new GpsDataMessage
             {
-                Latitude = _random.NextDouble() * 180 - 90,
-                Longitude = _random.NextDouble() * 360 - 180
+                /*
+                    Generate a random locationI've removed the random Lat, Long generation and replaced it with a static location someplace in the Australian Outback.
+                */
+                //Latitude = _random.NextDouble() * 180 - 90,
+                //Longitude = _random.NextDouble() * 360 - 180
+                Latitude = -22.545210,
+                Longitude = 128.500041
             };
         }
 

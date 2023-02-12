@@ -22,5 +22,17 @@
   </ItemGroup>
 -->
 
+  <ItemGroup>
+    <None Update="Certificates\DotNetTestThing.cert.pem">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>  
+        <None Update="Certificates\DotNetTestThing.private.key">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None> 
+        <None Update="Certificates\root-CA.crt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None> 
+  </ItemGroup>
+
 
 </Project>
